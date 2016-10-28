@@ -25,11 +25,11 @@ namespace HealthMonitoring.TestUtils.Awaitable
         public AwaitableBuilder<T> WithTimeline(string tag)
         {
             var inner = _task;
-            _task = () =>
+            _task = async () =>
             {
                 var awaitable = new AsyncTimedEvent(tag, _timelineProvider);
                 _timeline.Enqueue(awaitable);
-                return awaitable.Await(inner);
+                return await awaitable.Await(inner);
             };
             return this;
         }
