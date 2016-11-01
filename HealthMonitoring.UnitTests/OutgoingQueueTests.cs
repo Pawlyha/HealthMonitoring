@@ -67,8 +67,9 @@ namespace HealthMonitoring.UnitTests
             var items = queue.Dequeue(bucketSize, timeout, CancellationToken.None);
             watch.Stop();
 
+            var dequeuePeriod = (watch.Elapsed - timeout).Duration();
             Assert.Equal(availableItemsCount, items.Length);
-            Assert.True((watch.Elapsed - timeout).Duration() < AcceptableTimeDelta, "Expected full timeout");
+            Assert.True(dequeuePeriod < AcceptableTimeDelta, $"Expected full timeout: deqPer: {dequeuePeriod}, accTime: {AcceptableTimeDelta}");
         }
 
         [Fact]
